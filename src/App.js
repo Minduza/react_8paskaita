@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+// importuojam useRef hooksa
+import { useRef, useState } from "react";
+import InputExample from "./InputExample";
+import InputForm from "./components/InputForm";
+import InputColor from "./components/InputColor";
+import Converter from "./components/Converter";
 
-function App() {
+const App = () => {
+  // sukuriam ref kintąmąjį
+  let ref = useRef(0); // useRef(pradinė reiškmė)
+  const inputRef = useRef(null); // input arba tiem kurie neturi pradinės reikšmės, naudojam null
+  const todoInputRef = useRef(null);
+  const [todoInput, setTodoInput] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  const handleClick = () => {
+    // ref.current yra pagrindinė reikšmė
+    ref.current = ref.current + 1; // mutuojamas ref.current objektas
+    alert(`You clicked ${ref.current} times!`);
+  };
+
+  const focusInput = () => {
+    // ref pavyzdys kai sufokusuojamas input elementas
+    inputRef.current.focus();
+  };
+
+  const handleAddTodo = () => {
+    setTodos((prevTodos) => [...prevTodos, todoInput]);
+    todoInputRef.current.focus();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={handleClick}>Clicke me!</button>
+      {ref.current}
+      <br />
+      <br />
+      <button onClick={focusInput}>Focus on the input</button>
+      {/* pavyzdys kaip priskirti elementam ref atributą */}
+      <input ref={inputRef} />
+      <br />
+      <h2>Todos</h2>
+      <input
+        ref={todoInputRef}
+        value={todoInput}
+        onChange={(e) => setTodoInput(e.target.value)}
+      />
+      <button onClick={handleAddTodo}>Add Todo</button>
+      <div>{todos.join(", ")}</div>
+      <br />
+      <InputExample />
+      <br />
+      <br />
+      <br />
+      <br />
+      <InputForm />
+      <br />
+      <br />
+      <br />
+      <InputColor />
+      <br />
+      <br />
+      <br />
+      <Converter />
     </div>
   );
-}
+};
 
 export default App;
